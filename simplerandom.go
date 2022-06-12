@@ -25,7 +25,7 @@ func New(chars string) *SimpleRandom {
 // It will return an error if the system's secure random
 // number generator fails to function correctly, in which
 // case the caller should not continue.
-func (random *SimpleRandom) GenerateBytes(n int) ([]byte, error) {
+func (r *SimpleRandom) GenerateBytes(n int) ([]byte, error) {
 	b := make([]byte, n)
 
 	// Note that err == nil only if we read len(b) bytes.
@@ -43,14 +43,14 @@ func (random *SimpleRandom) GenerateBytes(n int) ([]byte, error) {
 // It will return an error if the system's secure random
 // number generator fails to function correctly, in which
 // case the caller should not continue.
-func (random *SimpleRandom) GenerateString(n int) (string, error) {
-	bytes, err := random.GenerateBytes(n)
+func (r *SimpleRandom) GenerateString(n int) (string, error) {
+	bytes, err := r.GenerateBytes(n)
 	if err != nil {
 		return "", err
 	}
 
 	for i, b := range bytes {
-		bytes[i] = random.chars[b%byte(len(random.chars))]
+		bytes[i] = r.chars[b%byte(len(r.chars))]
 	}
 
 	return string(bytes), nil
